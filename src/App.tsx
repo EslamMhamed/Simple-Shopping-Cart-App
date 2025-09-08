@@ -24,19 +24,48 @@ function App() {
       if(existingItem){
         return prevCartItems.map((item) => item.id === product.id ? {...item, quantity: item.quantity + 1} :item)
       }else{
-        return [...prevCartItems, {...product, quantity : 1}]
+        return [ {...product, quantity : 1}, ...prevCartItems]
       }
     })
-
   }
 
+  function increaseQuantity(id: number){
+    setCartItems((prevCartItems) => prevCartItems.map(item => item.id === id ? {...item, quantity: item.quantity + 1} : item ))
+  }
+
+
+  // function decreaseQuantity(id: number){
+  //   setCartItems(prevCartItems => prevCartItems.flatMap((item) => {
+  //     if (item.id === id){
+  //       if(item.quantity > 1){
+  //         return {...item, quantity : item.quantity -1}
+  //       }else{
+  //         return []
+  //       }
+  //     }
+  //     return item
+  //   } ))
+  // }
+
+    function decreaseQuantity(id: number){
+    setCartItems(prevCartItems => prevCartItems.filter(item => !(item.id === id && item.quantity === 1)).map(item => 
+      item.id === id ? {...item, quantity : item.quantity -1 } : item
+    ) )
+  }
+
+  function removeFromCart(id: number){
+    setCartItems((prevCartItems=> prevCartItems.filter(item => (item.id !== id))))
+  }
+
+  
   return (
     <main className="flex flex-col gap-4 text-white p-6 ">
-      <Header />
+      <Header cartItems={cartItems} />
 
       <div className="flex flex-col md:flex-row justify-between gap-4">
-        <ProductsList addToCart={addToCart} />
-        <Cart />
+        <ProductsList addToCart = {addToCart}  />
+        <Cart cartItems={cartItems} increaseQuantity={increaseQuantity} 
+        decreaseQuantity={decreaseQuantity} removeFromCart={removeFromCart} />
       </div>
     </main>
   )
