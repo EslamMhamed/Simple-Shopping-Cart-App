@@ -1,10 +1,16 @@
+import type { Product } from "../App"
 
-function ProductsList() {
+type ProductsListProps = {
+    addToCard : (prodct : Product)=> void
+}
 
-    const products = [
-        {id: 1, name: "Product A", price: "$25"},
-        {id: 2, name: "Product B", price: "$40"},
-        {id: 3, name: "Product C", price: "$30"},
+
+function ProductsList({addToCard}:ProductsListProps) {
+
+    const products: Product[] = [
+        {id: 1, name: "Product A", price: 25},
+        {id: 2, name: "Product B", price: 40},
+        {id: 3, name: "Product C", price: 30}
     ]
 
   return (
@@ -16,7 +22,7 @@ function ProductsList() {
                     <li key={product.id} className="flex justify-between items-center">
                         <h3 className="text-lg font-medium">{product.name}</h3>
                         <p className=" text-gray-400">{product.price}</p>
-                        <button className="bg-blue-500 hover:bgclue700
+                        <button onClick={()=>addToCard(product)} className="bg-blue-500 hover:bgclue700
                          text-white font-bold py-2 px-4 rounded">Add to Cart</button>
                     </li>
                 ))
